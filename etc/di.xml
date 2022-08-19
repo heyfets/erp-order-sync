@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Kheyfets\ErpOrderSync\Api\ErpOrdersManagementInterface" type="Kheyfets\ErpOrderSync\Model\ErpOrdersManagement"/>
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="Status" xsi:type="object">Kheyfets\ErpOrderSync\Console\Command\Status</item>
+            </argument>
+        </arguments>
+    </type>
+    <preference for="Kheyfets\ErpOrderSync\Api\ErpSyncRepositoryInterface" type="Kheyfets\ErpOrderSync\Model\ErpSyncRepository"/>
+    <preference for="Kheyfets\ErpOrderSync\Api\Data\ErpSyncInterface" type="Kheyfets\ErpOrderSync\Model\ErpSync"/>
+    <preference for="Kheyfets\ErpOrderSync\Api\Data\ErpSyncSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+    <type name="Magento\Sales\Api\OrderManagementInterface">
+        <plugin name="Magento_Sales_Api_OrderManagementInterface_After" type="Kheyfets\ErpOrderSync\Plugin\Magento\Sales\Api\OrderManagementInterface" sortOrder="10" disabled="false"/>
+    </type>
+
+    <virtualType name="Kheyfets\ErpOrderSync\Logger\ConsumerLoggerHandler" type="\Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+            <argument name="fileName" xsi:type="string">/var/log/erp_order_sync_export.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Kheyfets\ErpOrderSync\Logger\ConsumerLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="name" xsi:type="string">ERP Oder Consumer Logger</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="info" xsi:type="object">Kheyfets\ErpOrderSync\Logger\ConsumerLoggerHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Kheyfets\ErpOrderSync\Consumer\ErpOrderConsumer">
+        <arguments>
+            <argument name="logger" xsi:type="object">Kheyfets\ErpOrderSync\Logger\ConsumerLogger</argument>
+        </arguments>
+    </type>
+</config>

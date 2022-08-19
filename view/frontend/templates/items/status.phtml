@@ -1,0 +1,20 @@
+<?php /** @var Kheyfets\ErpOrderSync\Block\Items\Status $block */ ?>
+<div class="erp-sync-status">
+    <table class="erp-sync-status__table">
+        <?php $tableItems = $block->getStatusTableData();
+        if (count($tableItems) > 0) : ?>
+            <tr>
+                <th><?= __('Order ID') ?></th>
+                <th><?= __('Timestamp') ?></th>
+                <th><?= __('ERP Return Code') ?></th>
+            </tr>
+        <?php foreach ($tableItems as $item) : ?>
+                <tr>
+                    <td><?= $item->getOrderId()?></td>
+                    <td><?= $item->getTimestamp()?></td>
+                    <td><?= $item->getErpReturnCode()?></td>
+                </tr>
+        <?php endforeach;?>
+        <?php endif; ?>
+    </table>
+</div>
