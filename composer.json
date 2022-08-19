@@ -12,7 +12,7 @@
     "minimum-stability": "dev",
     "require": {
         "magento/framework": "103.*",
-        "magento/module-integration": "103.*"
+        "magento/module-integration": "100.*"
     },
     "autoload": {
         "files": [
